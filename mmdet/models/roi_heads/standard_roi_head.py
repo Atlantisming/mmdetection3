@@ -131,6 +131,7 @@ class StandardRoIHead(BaseRoIHead):
 
         losses = dict()
         # bbox head loss
+        # TODO CUDA 错误
         if self.with_bbox:
             bbox_results = self.bbox_loss(x, sampling_results)
             losses.update(bbox_results['loss_bbox'])
@@ -337,6 +338,7 @@ class StandardRoIHead(BaseRoIHead):
         # split batch bbox prediction back to each image
         cls_scores = bbox_results['cls_score']
         bbox_preds = bbox_results['bbox_pred']
+        # print('bbox_preds_predict', bbox_preds.shape)
         num_proposals_per_img = tuple(len(p) for p in proposals)
         rois = rois.split(num_proposals_per_img, 0)
         cls_scores = cls_scores.split(num_proposals_per_img, 0)

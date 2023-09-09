@@ -157,6 +157,8 @@ class TwoStageDetector(BaseDetector):
         Returns:
             dict: A dictionary of loss components
         """
+        # batch_inputs = torch.ones(1, 3, 800, 1199).to('cuda')
+        # torch.set_printoptions(8)
         x = self.extract_feat(batch_inputs)
 
         losses = dict()
@@ -224,8 +226,21 @@ class TwoStageDetector(BaseDetector):
         """
 
         assert self.with_bbox, 'Bbox head must be implemented.'
+        # print('batch_data_samples', batch_data_samples[0].img_id)
+        # batch_inputs = torch.ones(1, 3, 800, 1199).to('cuda')
+        # torch.set_printoptions(8)
         x = self.extract_feat(batch_inputs)
 
+        anchor_list = [[[-15., -4., 30., 19.], [-38., -16., 53., 31.],
+                        [-84., -40., 99., 55.], [-176., -88., 191., 103.],
+                        [-360., -184., 375., 199.], [-8., -8., 23., 23.],
+                        [-24., -24., 39., 39.], [-56., -56., 71., 71.],
+                        [-120., -120., 135., 135.], [-248., -248., 263., 263.],
+                        [-3., -14., 18., 29.], [-14., -36., 29., 51.],
+                        [-36., -80., 51., 95.], [-80., -168., 95., 183.],
+                        [-168., -344., 183., 359.]]]
+        self.rpn_head.anchor_generator.base_anchors = list(
+            torch.tensor(anchor_list).to('cuda'))
         # If there are no pre-defined proposals, use RPN to get proposals
         if batch_data_samples[0].get('proposals', None) is None:
             rpn_results_list = self.rpn_head.predict(

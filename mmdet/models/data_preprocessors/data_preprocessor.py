@@ -65,7 +65,7 @@ class DetDataPreprocessor(ImgDataPreprocessor):
             segmentation maps. Defaults to 255.
         bgr_to_rgb (bool): whether to convert image from BGR to RGB.
             Defaults to False.
-        rgb_to_bgr (bool): whether to convert image from RGB to RGB.
+        rgb_to_bgr (bool): whether to convert image from RGB to BGR.
             Defaults to False.
         boxtype2tensor (bool): Whether to keep the ``BaseBoxes`` type of
             bboxes data or not. Defaults to True.

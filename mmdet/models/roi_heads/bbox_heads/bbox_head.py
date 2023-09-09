@@ -150,6 +150,8 @@ class BBoxHead(BaseModule):
                 x = torch.mean(x, dim=(-1, -2))
         cls_score = self.fc_cls(x) if self.with_cls else None
         bbox_pred = self.fc_reg(x) if self.with_reg else None
+        # print('bbox_pred', bbox_pred.shape)
+        # exit()
         return cls_score, bbox_pred
 
     def _get_targets_single(self, pos_priors: Tensor, neg_priors: Tensor,
@@ -534,6 +536,9 @@ class BBoxHead(BaseModule):
             num_classes = 1 if self.reg_class_agnostic else self.num_classes
             roi = roi.repeat_interleave(num_classes, dim=0)
             bbox_pred = bbox_pred.view(-1, self.bbox_coder.encode_size)
+            # print('roi', roi[..., 1:].shape)
+            # print('bbox_pred', bbox_pred.shape)
+            # exit()
             bboxes = self.bbox_coder.decode(
                 roi[..., 1:], bbox_pred, max_shape=img_shape)
         else:
